@@ -1,9 +1,23 @@
 # macOS Finder用ツール
 
-Finderのツールバーに配置して使用するためのツール群
+Finderのツールバーに配置して使用するためのツール群です。以下のようにFinderにTerminalを開くボタンや、空のテキストファイルを作成するボタンを追加できます。
+
+<img src="https://github.com/n-ando/FinderTools/blob/main/figs/findertool_example.png" width=800>
 
 ## インストール
-+ .app ファイルを /Application または適当な場所にコピー
+
+インストーラやパッケージは用意していないので git から clone するなどして .app 群をダウンロードしてください。
+
+```shell
+$ git clone https://github.com/n-ando/FinderTools
+```
+
+つぎに、.app ファイルを /Application または適当な場所にコピーします。
+
+Finderで .app をインストールした場所を開き、Commandキーを押しながら、Finderのツールバーにドラッグ&ドロップします。
+
+<img src="https://github.com/n-ando/FinderTools/blob/main/figs/command_drug.png" width=800>
+
 
 
 ## NewText.app
