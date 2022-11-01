@@ -14,11 +14,12 @@ $ git clone https://github.com/n-ando/FinderTools
 
 つぎに、.app ファイルを /Application または適当な場所にコピーします。
 
-Finderで .app をインストールした場所を開き、Commandキーを押しながら、Finderのツールバーにドラッグ&ドロップします。
+Finderで .app をインストールした場所を開き、Commandキーを押しながら、Finderのツールバーにドラッグ&ドロップして、好きな位置へ配置します。
 
 <img src="https://github.com/n-ando/FinderTools/blob/main/figs/command_drug.png" width=800>
 
 
+# 利用可能なツール
 
 ## NewText.app
 現在開いているフォルダに空のテキストファイルを作成するボタン。
