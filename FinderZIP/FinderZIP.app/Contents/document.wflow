@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>521.2</string>
+	<key>AMApplicationVersion</key>
+	<string>2.10</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.1.1</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Finder</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict/>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>AMRequiredResources</key>
+				<array/>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Get Selected Finder Items 2.action</string>
+				<key>ActionName</key>
+				<string>選択されたFinder項目を取得</string>
+				<key>ActionParameters</key>
+				<dict/>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.GetSelectedFinderItems2</string>
+				<key>CFBundleVersion</key>
+				<string>2.1.1</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryFilesAndFolders</string>
+				</array>
+				<key>Class Name</key>
+				<string>AMGetSelectedFinderItemsAction</string>
+				<key>IgnoresInput</key>
+				<false/>
+				<key>InputUUID</key>
+				<string>2FA393B8-6558-4D34-B625-2C866E3AAD37</string>
+				<key>Keywords</key>
+				<array/>
+				<key>OutputUUID</key>
+				<string>33013BB5-3200-48DC-949B-E65CE4D2254A</string>
+				<key>UUID</key>
+				<string>BD324BC8-5D6F-4EA9-A557-0C20D162AFBB</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Finder</string>
+				</array>
+				<key>arguments</key>
+				<dict/>
+				<key>conversionLabel</key>
+				<integer>0</integer>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>263.500000:191.000000</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.0.3</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<dict/>
+					<key>CheckedForUserDefaultShell</key>
+					<dict/>
+					<key>inputMethod</key>
+					<dict/>
+					<key>shell</key>
+					<dict/>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<key>ActionName</key>
+				<string>シェルスクリプトを実行</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<string>#!/bin/bash
+
+debug=false
+
+# Finderの現在のフォルダパスを取得
+output_dir=$(osascript &lt;&lt;EOF
+tell application "Finder"
+  set thePath to (POSIX path of (target of front window as alias))
+end tell
+EOF
+)
+
+# Debug diralog
+if $debug ;  then
+  osascript &lt;&lt;EOF
+display dialog "出力ディレクトリ:${output_dir}" buttons {"OK"} default button "OK"
+EOF
+fi
+
+# 選択されたファイルの一覧、空・不可視文字要素は削除
+files=()
+for arg in "$@"; do
+  trimmed="$(echo "$arg" | tr -d '[:space:]')"
+  if [ -n "$trimmed" ] &amp;&amp; [ -e "$arg" ]; then
+    files+=("$arg")
+  fi
+done
+
+# Debug diralog
+if $debug ;  then
+  file_list=$(printf "%s\n" "${files[@]}")
+  osascript &lt;&lt;EOF
+display dialog "ファイルリスト(引数):${file_list}" buttons {"OK"} default button "OK"
+EOF
+fi
+
+# 入力チェック：ファイルリストが空ならエラー
+if [ ${#files[@]} -eq 0 ]; then
+  osascript -e 'display dialog "ファイルが選択されていません。" buttons {"OK"}'
+  exit 1
+fi
+
+# カレントディレクトリを出力ディレクトリにセット
+cd "$output_dir" || exit 1
+
+# ファイル：ファイルパスをカレントからの相対パスにする
+relative_files=()
+for f in "${files[@]}"; do
+  rel_path=$(python3 -c "import os.path; print(os.path.relpath('$f', '$output_dir'))")
+  if [ -e "$rel_path" ]; then
+    relative_files+=("$rel_path")
+  else
+    echo "スキップ: $rel_path は見つかりません"
+  fi
+done
+
+# Debug diralog
+if $debug ;  then
+  file_list=$(printf "%s\n" "${relative_files[@]}")
+  osascript &lt;&lt;EOF
+display dialog "ファイルリスト(相対パス):${file_list}" buttons {"OK"} default button "OK"
+EOF
+fi
+
+# 出力ファイル名を定義
+timestamp=$(date +%Y%m%d_%H%M%S)
+output="$output_dir/Archive_$timestamp.zip"
+
+# 圧縮方法を選択
+choice=$(osascript &lt;&lt;EOF
+set options to {"暗号化ZIP（パスワード付き）", "通常ZIP（パスワードなし）"}
+choose from list options with prompt "圧縮方法を選んでください：" default items {"通常ZIP（パスワードなし）"} without multiple selections allowed
+EOF
+)
+
+# キャンセル処理
+echo "$choice" &gt; "$output_dir/hogehoge.txt"
+if [[ "$choice" == "false" || "$choice" == "" ]]; then
+  echo "キャンセルされました"
+  exit 0
+fi
+
+# 圧縮処理
+if [[ "$choice" == *"パスワード付き"* ]]; then
+  password=$(osascript &lt;&lt;EOF
+display dialog "パスワードを入力してください：" default answer "" with hidden answer
+text returned of result
+EOF
+  )
+  output="$output_dir/Archive_${timestamp}_encrypted.zip"
+  printf "%s\n" "${files[@]}" &gt;&gt; "$output_dir/hogehoge.txt"
+  expect &lt;&lt;EOF
+spawn /usr/bin/zip -r -e "$output" ${relative_files[@]}
+expect "Enter password:"
+send "$password\r"
+expect "Verify password:"
+send "$password\r"
+expect eof
+EOF
+else
+  printf "%s\n" "${file_list}" &gt; "/tmp/hogehoge.txt"
+  /usr/bin/zip -r "$output" "${relative_files[@]}"
+fi
+
+# 圧縮結果の確認
+if [ ! -f "$output" ]; then
+  osascript -e 'display dialog "ZIPファイルの作成に失敗しました。" buttons {"OK"}'
+  exit 1
+fi
+</string>
+					<key>CheckedForUserDefaultShell</key>
+					<true/>
+					<key>inputMethod</key>
+					<integer>1</integer>
+					<key>shell</key>
+					<string>/bin/bash</string>
+					<key>source</key>
+					<string></string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.RunShellScript</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.3</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunShellScriptAction</string>
+				<key>InputUUID</key>
+				<string>4BE3F96A-1BBB-4FB7-B1BD-90F42EE75FD4</string>
+				<key>Keywords</key>
+				<array>
+					<string>シェル</string>
+					<string>スクリプト</string>
+					<string>コマンド</string>
+					<string>実行</string>
+					<string>UNIX</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>7153DE62-1226-4FC5-B751-57B4245A902E</string>
+				<key>UUID</key>
+				<string>67B19FEF-D898-49BC-B1AF-5839863AADD1</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>inputMethod</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>CheckedForUserDefaultShell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>COMMAND_STRING</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+					<key>4</key>
+					<dict>
+						<key>default value</key>
+						<string>/bin/sh</string>
+						<key>name</key>
+						<string>shell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>4</string>
+					</dict>
+				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>395.500000:677.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict>
+		<key>C1B18978-30F6-4EF6-BEA3-1067BC53D385</key>
+		<dict>
+			<key>from</key>
+			<string>BD324BC8-5D6F-4EA9-A557-0C20D162AFBB - BD324BC8-5D6F-4EA9-A557-0C20D162AFBB</string>
+			<key>to</key>
+			<string>67B19FEF-D898-49BC-B1AF-5839863AADD1 - 67B19FEF-D898-49BC-B1AF-5839863AADD1</string>
+		</dict>
+	</dict>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.application</string>
+	</dict>
+</dict>
+</plist>
