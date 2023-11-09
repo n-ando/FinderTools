@@ -56,10 +56,10 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			HdYwbPdPgK3JfzoIYh+1oMTBOYw=
+			Yk1/ehIwHzeatHUiKXAflI9fd9I=
 			</data>
 			<key>requirement</key>
-			<string>cdhash H"91893b0d3a11d97a7ff5b3c8a621635957c2e20c" or cdhash H"1dd6306cf74f80adc97f3a08621fb5a0c4c1398c"</string>
+			<string>cdhash H"00221b9bb0183ceba1e2ab5fb243df2269a8dfda" or cdhash H"624d7f7a12301f379ab4752229701f948f5f77d2"</string>
 		</dict>
 	</dict>
 	<key>rules</key>

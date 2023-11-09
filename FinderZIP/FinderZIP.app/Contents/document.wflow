@@ -214,7 +214,6 @@ EOF
 )
 
 # キャンセル処理
-echo "$choice" &gt; "$output_dir/hogehoge.txt"
 if [[ "$choice" == "false" || "$choice" == "" ]]; then
   echo "キャンセルされました"
   exit 0
@@ -228,7 +227,6 @@ text returned of result
 EOF
   )
   output="$output_dir/Archive_${timestamp}_encrypted.zip"
-  printf "%s\n" "${files[@]}" &gt;&gt; "$output_dir/hogehoge.txt"
   expect &lt;&lt;EOF
 spawn /usr/bin/zip -r -e "$output" ${relative_files[@]}
 expect "Enter password:"
@@ -238,7 +236,6 @@ send "$password\r"
 expect eof
 EOF
 else
-  printf "%s\n" "${file_list}" &gt; "/tmp/hogehoge.txt"
   /usr/bin/zip -r "$output" "${relative_files[@]}"
 fi
 

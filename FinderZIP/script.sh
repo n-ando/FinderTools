@@ -1,6 +1,6 @@
 #!/bin/bash
 
-debug=true
+debug=false
 
 # Finderの現在のフォルダパスを取得
 output_dir=$(osascript <<EOF
@@ -74,7 +74,6 @@ EOF
 )
 
 # キャンセル処理
-echo "$choice" > "$output_dir/hogehoge.txt"
 if [[ "$choice" == "false" || "$choice" == "" ]]; then
   echo "キャンセルされました"
   exit 0
@@ -88,7 +87,6 @@ text returned of result
 EOF
   )
   output="$output_dir/Archive_${timestamp}_encrypted.zip"
-  printf "%s\n" "${files[@]}" >> "$output_dir/hogehoge.txt"
   expect <<EOF
 spawn /usr/bin/zip -r -e "$output" ${relative_files[@]}
 expect "Enter password:"
@@ -98,7 +96,6 @@ send "$password\r"
 expect eof
 EOF
 else
-  printf "%s\n" "${file_list}" > "/tmp/hogehoge.txt"
   /usr/bin/zip -r "$output" "${relative_files[@]}"
 fi
 
