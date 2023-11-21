@@ -1,6 +1,6 @@
 #!/bin/bash
 
-app_base="FinderZIP"
+app_base="NewVSCode"
 for theme in light dark; do
   app="${app_base}_${theme}.app"
   cp -R ${app_base}.app ${app}
