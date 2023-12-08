@@ -38,23 +38,32 @@ Finderで .app をインストールした場所を開き、Commandキーを押�
 
 ## 2. 利用可能なツール
 
-### 2.1. NewText.app <img src="https://github.com/n-ando/FinderTools/blob/main/NewText/icons/icon_512x512@2x_light.png" width=32>
+### 2.1. NewText.app
+<img src="https://github.com/n-ando/FinderTools/blob/main/NewText/icons/icon_512x512@2x_light.png" width=32>
 
 現在開いているフォルダに空のテキストファイルを作成するボタン。
 ファイル名自動では 年(二桁)月日_.txt となる。
 
 ### 2.2. NewMD.app
+<img src="https://github.com/n-ando/FinderTools/blob/main/NewMD/icons/icon_512x512@2x_light.png" width=32>
+
 現在開いているフォルダに空のMarkDownファイルを作成するボタン。
 ファイル名自動では 年(二桁)月日_.md となる。
 
 ### 2.3. NewTerminal.app
+<img src="https://github.com/n-ando/FinderTools/blob/main/NewTerminal/icons/icon_512x512@2x_light.png" width=32>
+
 現在開いているフォルダをカレントディレクトリとして Terminal アプリを開くボタン。
 
 ### 2.4. FinderZIP.app
+<img src="https://github.com/n-ando/FinderTools/blob/main/FinderZIP/icons/icon_512x512@2x_light.png" width=32>
+
 選択したファイルをZIPで圧縮するボタン。パスワード付きZIPも作成可能。
 圧縮ファイルは、現在のディレクトリに、Archive_<日付>.zip または Archive_<日付>_encripted.zip というファイル名で作成される。
 
 ### 2.5. NewVSCode.app
+<img src="https://github.com/n-ando/FinderTools/blob/main/NewVSCode/icons/icon_512x512@2x_light.png" width=32>
+
 選択したファイルをVS-Codeの新規ウインドウで開くボタン。
 既存のウィンドウがどこにあっても、現在のデスクトップ上でVS-Codeを開きます。
 
