@@ -60,6 +60,8 @@ Finderで .app をインストールした場所を開き、Commandキーを押�
 
 選択したファイルをZIPで圧縮するボタン。パスワード付きZIPも作成可能。
 圧縮ファイルは、現在のディレクトリに、Archive_<日付>.zip または Archive_<日付>_encripted.zip というファイル名で作成される。
+なお、デフォルトでは内蔵のzipコマンドもしくはHome Brewのzipコマンドが使用されるが、これで圧縮したzipファイルはWindowsで展開すると文字化けする問題がある。
+Home Brewで p7zip (7zコマンド) がインストールすることにより、この問題を回避できる。7zコマンドがHome Brewでインストールされていると7zコマンドを優先的に使用するようになるとともに、zip形式だけでなく7z形式での圧縮もできるようになる。
 
 ### 2.5. NewVSCode.app
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewVSCode/icons/icon_512x512@2x_light.png" width=32>
