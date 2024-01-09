@@ -59,9 +59,16 @@ Finderで .app をインストールした場所を開き、Commandキーを押�
 <img src="https://github.com/n-ando/FinderTools/blob/main/FinderZIP/icons/icon_512x512@2x_light.png" width=32>
 
 選択したファイルをZIPで圧縮するボタン。パスワード付きZIPも作成可能。
-圧縮ファイルは、現在のディレクトリに、Archive_<日付>.zip または Archive_<日付>_encripted.zip というファイル名で作成される。
-なお、デフォルトでは内蔵のzipコマンドもしくはHome Brewのzipコマンドが使用されるが、これで圧縮したzipファイルはWindowsで展開すると文字化けする問題がある。
-Home Brewで p7zip (7zコマンド) がインストールすることにより、この問題を回避できる。7zコマンドがHome Brewでインストールされていると7zコマンドを優先的に使用するようになるとともに、zip形式だけでなく7z形式での圧縮もできるようになる。
+
+#### 圧縮ファイル名について
+圧縮ファイルは、現在のディレクトリに、Archive_<日付>.zip または Archive_<日付>_encripted.zip というファイル名で圧縮ファイルが作成される。フォルダが1個のみ指定されている場合、<フォルダ名>.zip というファイル名で圧縮ファイルが作成される。
+
+#### Windowsでの文字化け問題について
+デフォルトでは内蔵のzipコマンドもしくは <a href="https://brew.sh/ja/">Homebrew</a> のzipコマンドが使用されるが、これらのコマンドで圧縮したzipファイルは、Windowsで展開すると文字化けする問題がしられている。
+Homebrewで p7zip (7zコマンド) をインストールすることにより、この問題を回避できる。7zコマンドがHomebrewでインストールされていると7zコマンドを優先的に使用するようになるとともに、zip形式だけでなく7z形式での圧縮もできるようになる。
+
+#### ZipCrypto形式, AES256形式
+なお、7zコマンドでzipファイルを作成するとデフォルトではWindowsの標準機能では展開できないAES256形式で圧縮されます。このアプリケーションでは、Windowsでも展開できるようにZipCrypto形式で圧縮するようになっていますが、ZipCrypto形式はセキュリティ的に脆弱で容易にパスワードを推定できるため、セキュリティを考慮する必要がファイルの場合は別途直接7zコマンドで圧縮することをおすすめします。
 
 ### 2.5. NewVSCode.app
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewVSCode/icons/icon_512x512@2x_light.png" width=32>
