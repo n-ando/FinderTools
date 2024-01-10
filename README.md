@@ -42,13 +42,13 @@ Finderで .app をインストールした場所を開き、Commandキーを押�
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewText/icons/icon_512x512@2x_light.png" width=32>
 
 現在開いているフォルダに空のテキストファイルを作成するボタン。
-ファイル名自動では 年(二桁)月日_.txt となる。
+ファイル名自動では 年(二桁)月日_.txt となります。
 
 ### 2.2. NewMD.app
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewMD/icons/icon_512x512@2x_light.png" width=32>
 
 現在開いているフォルダに空のMarkDownファイルを作成するボタン。
-ファイル名自動では 年(二桁)月日_.md となる。
+ファイル名自動では 年(二桁)月日_.md となります。
 
 ### 2.3. NewTerminal.app
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewTerminal/icons/icon_512x512@2x_light.png" width=32>
@@ -61,14 +61,15 @@ Finderで .app をインストールした場所を開き、Commandキーを押�
 選択したファイルをZIPで圧縮するボタン。パスワード付きZIPも作成可能。
 
 #### 圧縮ファイル名について
-圧縮ファイルは、現在のディレクトリに、Archive_<日付>.zip または Archive_<日付>_encripted.zip というファイル名で圧縮ファイルが作成される。フォルダが1個のみ指定されている場合、<フォルダ名>.zip というファイル名で圧縮ファイルが作成される。
+圧縮ファイルは、現在のディレクトリに、Archive_<日付>.zip または Archive_<日付>_encripted.zip というファイル名で圧縮ファイルが作成されます。フォルダが1個のみ選択されている場合は、<フォルダ名>.zip というファイル名で圧縮ファイルが作成されます。
 
 #### Windowsでの文字化け問題について
-デフォルトでは内蔵のzipコマンドもしくは <a href="https://brew.sh/ja/">Homebrew</a> のzipコマンドが使用されるが、これらのコマンドで圧縮したzipファイルは、Windowsで展開すると文字化けする問題がしられている。
-Homebrewで p7zip (7zコマンド) をインストールすることにより、この問題を回避できる。7zコマンドがHomebrewでインストールされていると7zコマンドを優先的に使用するようになるとともに、zip形式だけでなく7z形式での圧縮もできるようになる。
+デフォルトでは内蔵のzipコマンドもしくは <a href="https://brew.sh/ja/">Homebrew</a> のzipコマンドが使用されますが、これらのコマンドで圧縮したzipファイルは、Windowsで展開すると文字化けする問題が知られています。
+Homebrewで p7zip (7zコマンド) をインストールすることにより、この問題を回避できます。7zコマンドがHomebrewでインストールされていると7zコマンドが優先的に使用され、zip形式、7z形式のいずれかで圧縮ができるようになります。
 
 #### ZipCrypto形式, AES256形式
-なお、7zコマンドでzipファイルを作成するとデフォルトではWindowsの標準機能では展開できないAES256形式で圧縮されます。このアプリケーションでは、Windowsでも展開できるようにZipCrypto形式で圧縮するようになっていますが、ZipCrypto形式はセキュリティ的に脆弱で容易にパスワードを推定できるため、セキュリティを考慮する必要がファイルの場合は別途直接7zコマンドで圧縮することをおすすめします。
+7zコマンドでzipファイルを作成すると、デフォルトではWindowsの標準機能では展開できないAES256形式で圧縮されます。展開するにはWindows側に<a href="https://7-zip.opensource.jp/">7-ZIP</a>等、AES256形式に対応したアプリケーションをインストールする必要があります。
+なお、本アプリケーションでは、Windowsでも展開できるようにZipCrypto形式で圧縮するようになっていますが、ZipCrypto形式はセキュリティ的に脆弱でパスワードを容易に推定できることが知られており、セキュリティを考慮する必要がファイルの場合は別途直接7zコマンドで圧縮することを推奨します。
 
 ### 2.5. NewVSCode.app
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewVSCode/icons/icon_512x512@2x_light.png" width=32>
