@@ -42,13 +42,13 @@ Finderで .app をインストールした場所を開き、Commandキーを押�
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewText/icons/icon_512x512@2x_light.png" width=32>
 
 現在開いているフォルダに空のテキストファイルを作成するボタン。
-ファイル名自動では 年(二桁)月日_.txt となります。
+ファイル名は自動で 年(二桁)月日_.txt となります。
 
 ### 2.2. NewMD.app
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewMD/icons/icon_512x512@2x_light.png" width=32>
 
 現在開いているフォルダに空のMarkDownファイルを作成するボタン。
-ファイル名自動では 年(二桁)月日_.md となります。
+ファイル名は自動で 年(二桁)月日_.md となります。
 
 ### 2.3. NewTerminal.app
 <img src="https://github.com/n-ando/FinderTools/blob/main/NewTerminal/icons/icon_512x512@2x_light.png" width=32>
