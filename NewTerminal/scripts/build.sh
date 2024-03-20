@@ -27,6 +27,37 @@ die()  { printf '\033[1;31m[error]\033[0m %s\n' "$*" >&2; exit 1; }
 
 require() { command -v "$1" >/dev/null 2>&1 || die "'$1' not found (this step needs macOS)."; }
 
+
+sanitize_bundle_id_component() {
+  printf '%s' "$1" | tr -cs 'A-Za-z0-9' '-' | sed 's/^-\+//; s/-\+$//'
+}
+
+prepare_app_security_metadata() {
+  local app="$1"
+  local variant="$2"
+  local plist="${app}/Contents/Info.plist"
+  local safe_variant
+  safe_variant="$(sanitize_bundle_id_component "$variant")"
+
+  # Give each generated variant its own identity for LaunchServices/TCC.
+  plutil -replace CFBundleIdentifier \
+    -string "jp.go.aist.nando.${APP_NAME}.${safe_variant}" \
+    "$plist"
+
+  # codesign rejects resource forks / FinderInfo / extended attributes.
+  # Remove all extended attributes, not only com.apple.quarantine.
+  xattr -cr "$app" 2>/dev/null || true
+  find "$app" -name '._*' -delete 2>/dev/null || true
+
+  # Re-sign after changing Info.plist and resources.
+  if command -v codesign >/dev/null 2>&1; then
+    codesign --force --deep --sign - "$app"
+    codesign --verify --deep --strict --verbose=2 "$app" >/dev/null
+  else
+    warn "codesign not found; generated app may need manual signing"
+  fi
+}
+
 # ---------------------------------------------------------------------------
 # icns: master_1024.png -> .iconset (sips) -> .icns (iconutil)
 # ---------------------------------------------------------------------------
@@ -113,6 +144,7 @@ build_apps() {
     cp "$icns" "${res}/ApplicationStub.icns"   # legacy / fallback icon
     cp "$car"  "${res}/Assets.car"             # modern Liquid Glass icon
     plutil -replace CFBundleIconName -string "$name" "${app}/Contents/Info.plist"
+    prepare_app_security_metadata "$app" "$v"
     touch "$app"                               # nudge LaunchServices/Finder
   done
 }
