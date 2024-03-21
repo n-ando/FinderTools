@@ -1,4 +1,4 @@
-# NewText — icon & app build
+# FinderZIP — icon & app build
 # Thin wrapper over scripts/build.sh. Run `make help` for details.
 
 BUILD := ./scripts/build.sh
