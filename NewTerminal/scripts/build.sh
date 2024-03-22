@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# build.sh — rebuild NewText icons and app variants from a single source.
+# build.sh — rebuild NewMD icons and app variants from a single source.
 #
 #   ./scripts/build.sh all          # icns -> icon -> car -> apps (default)
 #   ./scripts/build.sh icns         # master_1024.png -> build/icns/<variant>.icns
 #   ./scripts/build.sh icon         # src/icon/<variant> -> build/icon/<Name>.icon
 #   ./scripts/build.sh car          # build/icon/*.icon -> build/car/<variant>/Assets.car
-#   ./scripts/build.sh apps         # template + icons -> build/apps/NewText_<variant>.app
+#   ./scripts/build.sh apps         # template + icons -> build/apps/NewMD_<variant>.app
 #   ./scripts/build.sh clean        # remove build/
 #   ./scripts/build.sh cache-reset  # restart Dock & Finder to flush the icon cache
 #
