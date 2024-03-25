@@ -1,11 +1,11 @@
-# config.sh — single source of truth for the AnyToPDF build.
+# config.sh — single source of truth for the NewText build.
 #
 # Sourced by scripts/build.sh. Edit values here; the scripts read from
 # here so that adding a theme or renaming the app touches one file only.
 
-APP_NAME="NewVSCode"
+APP_NAME="AnyToPDF"
 
-# Appearance variants to produce. Each becomes a AnyToPDF_<variant>.app.
+# Appearance variants to produce. Each becomes a NewText_<variant>.app.
 # To add a variant, add its name here and create src/icon/<variant>/
 # (icon.json + master_1024.png), then add a case in icon_name_for().
 VARIANTS=(light dark)
@@ -27,7 +27,7 @@ DEV_REGION="en"
 
 # --- Layout (relative to repo root; do not usually need to change) ---
 SRC_DIR="src"
-ICON_SRC_DIR="${SRC_DIR}/icon"          # AnyToPDF.svg + <variant>/{icon.json,master_1024.png}
+ICON_SRC_DIR="${SRC_DIR}/icon"          # newtext.svg + <variant>/{icon.json,master_1024.png}
 SHARED_SVG="${ICON_SRC_DIR}/icon.svg"
 TEMPLATE_APP="app/${APP_NAME}.app"      # pristine Automator app (checked in)
 
@@ -35,7 +35,7 @@ BUILD_DIR="build"
 ICNS_OUT="${BUILD_DIR}/icns"            # legacy .icns
 ICON_OUT="${BUILD_DIR}/icon"            # assembled *.icon bundles
 CAR_OUT="${BUILD_DIR}/car"              # compiled Assets.car (per variant)
-APPS_OUT="${BUILD_DIR}/apps"            # final AnyToPDF_<variant>.app
+APPS_OUT="${BUILD_DIR}/apps"            # final NewText_<variant>.app
 
 # Sizes for the legacy .icns iconset: "<pixels>:<filename>"
 ICNS_SIZES=(

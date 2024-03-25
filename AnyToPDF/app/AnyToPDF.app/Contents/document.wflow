@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>534</string>
+	<key>AMApplicationVersion</key>
+	<string>2.10</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.1.1</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Finder</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict/>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.path</string>
+					</array>
+				</dict>
+				<key>AMRequiredResources</key>
+				<array/>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Get Selected Finder Items 2.action</string>
+				<key>ActionName</key>
+				<string>選択されたFinder項目を取得</string>
+				<key>ActionParameters</key>
+				<dict/>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.GetSelectedFinderItems2</string>
+				<key>CFBundleVersion</key>
+				<string>2.1.1</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryFilesAndFolders</string>
+				</array>
+				<key>Class Name</key>
+				<string>AMGetSelectedFinderItemsAction</string>
+				<key>InputUUID</key>
+				<string>47CB645F-4333-48E8-95D1-EC9B5CB5C2CA</string>
+				<key>Keywords</key>
+				<array/>
+				<key>OutputUUID</key>
+				<string>7068AE99-645D-460F-A6C8-564FBF0F9FC8</string>
+				<key>UUID</key>
+				<string>62C052AF-EDF6-42EE-A0B7-9F015F8FAFC6</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Finder</string>
+				</array>
+				<key>arguments</key>
+				<dict/>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>207.000000:68.000000</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>AppleScriptを実行</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>property wordExts : {"doc", "docx"}
+property pptExts : {"ppt", "pptx"}
+property plainTextExts : {"txt"}
+property markdownExts : {"md", "markdown"}
+property imageExts : {"png", "jpg", "jpeg", "gif", "tif", "tiff", "bmp", "heic", "webp"}
+
+on run {input, parameters}
+	set convertedCount to 0
+	set failedItems to {}
+	set unsupportedItems to {}
+	
+	tell application "Finder"
+		set selectedItems to selection as alias list
+	end tell
+	
+	if selectedItems is {} then
+		display dialog "PDFに変換するファイルをFinderで選択してから実行してください。" buttons {"OK"} default button "OK"
+		return
+	end if
+	
+	set totalCount to count of selectedItems
+	set processedCount to 0
+	
+	display notification ((totalCount as text) &amp; " 件のファイルをPDFに変換します。") with title "PDF変換開始"
+	
+	repeat with f in selectedItems
+		set processedCount to processedCount + 1
+		
+		set inPath to POSIX path of f
+		set fileName to my fileNameFromPath(inPath)
+		set extName to my lowerExt(inPath)
+		set outPath to my makeOutputPath(inPath)
+		
+		display notification "処理中: " &amp; fileName with title "PDF変換中" subtitle ((processedCount as text) &amp; " / " &amp; (totalCount as text))
+		
+		try
+			if wordExts contains extName then
+				my removeExistingFile(outPath)
+				my convertWordToPDF(inPath, outPath)
+				set convertedCount to convertedCount + 1
+				
+			else if pptExts contains extName then
+				my removeExistingFile(outPath)
+				my convertPowerPointToPDF(inPath, outPath)
+				set convertedCount to convertedCount + 1
+				
+			else if markdownExts contains extName then
+				my removeExistingFile(outPath)
+				my convertMarkdownByPandoc(inPath, outPath)
+				set convertedCount to convertedCount + 1
+				
+			else if plainTextExts contains extName then
+				my removeExistingFile(outPath)
+				my convertByCupsFilter(inPath, outPath)
+				set convertedCount to convertedCount + 1
+				
+			else if imageExts contains extName then
+				my removeExistingFile(outPath)
+				my convertByCupsFilter(inPath, outPath)
+				set convertedCount to convertedCount + 1
+				
+			else
+				set end of unsupportedItems to inPath
+			end if
+			
+		on error errMsg number errNum
+			set end of failedItems to inPath &amp; " : " &amp; errMsg
+			display notification fileName with title "PDF変換失敗" subtitle errMsg
+		end try
+	end repeat
+	
+	set msg to (convertedCount as text) &amp; " 件のファイルをPDFに変換しました。"
+	
+	if unsupportedItems is not {} then
+		set msg to msg &amp; return &amp; return &amp; "未対応のファイル:" &amp; return &amp; my joinList(unsupportedItems, return)
+	end if
+	
+	if failedItems is not {} then
+		set msg to msg &amp; return &amp; return &amp; "変換に失敗したファイル:" &amp; return &amp; my joinList(failedItems, return)
+	end if
+	
+	if failedItems is {} then
+		display notification msg with title "PDF変換完了"
+	else
+		display notification ((convertedCount as text) &amp; " 件成功、" &amp; ((count of failedItems) as text) &amp; " 件失敗しました。") with title "PDF変換完了"
+	end if
+	
+	display dialog msg buttons {"OK"} default button "OK"
+	
+	return input
+end run
+
+
+on convertWordToPDF(inPath, outPath)
+	tell application "Microsoft Word"
+		activate
+		open POSIX file inPath
+		
+		delay 2
+		
+		save as active document file name outPath file format format PDF
+		close active document saving no
+	end tell
+end convertWordToPDF
+
+
+on convertPowerPointToPDF(inPath, outPath)
+	tell application "Microsoft PowerPoint"
+		activate
+		open POSIX file inPath
+		
+		delay 1
+		
+		save active presentation in POSIX file outPath as save as PDF
+		close active presentation
+	end tell
+end convertPowerPointToPDF
+
+
+on convertMarkdownByPandoc(inPath, outPath)
+	set pandocPath to my findExecutable("pandoc")
+	set latexPath to my findExecutable("lualatex")
+	
+	set cmd to quoted form of pandocPath &amp; " " &amp; quoted form of inPath &amp; " -o " &amp; quoted form of outPath &amp; " --pdf-engine=" &amp; quoted form of latexPath &amp; " -V documentclass=ltjsarticle -V geometry:margin=25mm"
+	
+	do shell script cmd
+end convertMarkdownByPandoc
+
+
+on convertByCupsFilter(inPath, outPath)
+	do shell script "/usr/sbin/cupsfilter -m application/pdf " &amp; quoted form of inPath &amp; " &gt; " &amp; quoted form of outPath
+end convertByCupsFilter
+
+
+on removeExistingFile(outPath)
+	do shell script "/bin/rm -f " &amp; quoted form of outPath
+end removeExistingFile
+
+
+on findExecutable(commandName)
+	set candidatePaths to {¬
+		"/opt/homebrew/bin/" &amp; commandName, ¬
+		"/usr/local/bin/" &amp; commandName, ¬
+		"/Library/TeX/texbin/" &amp; commandName, ¬
+		"/usr/bin/" &amp; commandName, ¬
+		"/bin/" &amp; commandName}
+	
+	repeat with p in candidatePaths
+		if my executableExists(p as text) then
+			return p as text
+		end if
+	end repeat
+	
+	try
+		set foundPath to do shell script "/usr/bin/env PATH=/opt/homebrew/bin:/usr/local/bin:/Library/TeX/texbin:/usr/bin:/bin:/usr/sbin:/sbin /usr/bin/which " &amp; quoted form of commandName
+		if foundPath is not "" then
+			return foundPath
+		end if
+	on error
+		error commandName &amp; " が見つかりません。インストールされているか確認してください。"
+	end try
+	
+	error commandName &amp; " が見つかりません。インストールされているか確認してください。"
+end findExecutable
+
+
+on executableExists(posixPath)
+	try
+		do shell script "/bin/test -x " &amp; quoted form of posixPath
+		return true
+	on error
+		return false
+	end try
+end executableExists
+
+
+on lowerExt(posixPath)
+	set oldDelims to AppleScript's text item delimiters
+	set AppleScript's text item delimiters to "."
+	set parts to text items of posixPath
+	
+	if (count of parts) &lt; 2 then
+		set AppleScript's text item delimiters to oldDelims
+		return ""
+	end if
+	
+	set extName to item -1 of parts
+	set AppleScript's text item delimiters to oldDelims
+	
+	return do shell script "/usr/bin/printf %s " &amp; quoted form of extName &amp; " | /usr/bin/tr '[:upper:]' '[:lower:]'"
+end lowerExt
+
+
+on makeOutputPath(posixPath)
+	set oldDelims to AppleScript's text item delimiters
+	set AppleScript's text item delimiters to "."
+	set parts to text items of posixPath
+	
+	if (count of parts) &lt; 2 then
+		set AppleScript's text item delimiters to oldDelims
+		return posixPath &amp; ".pdf"
+	end if
+	
+	set stemParts to items 1 thru -2 of parts
+	set AppleScript's text item delimiters to "."
+	set stemPath to stemParts as text
+	set AppleScript's text item delimiters to oldDelims
+	
+	return stemPath &amp; ".pdf"
+end makeOutputPath
+
+
+on fileNameFromPath(posixPath)
+	set oldDelims to AppleScript's text item delimiters
+	set AppleScript's text item delimiters to "/"
+	set parts to text items of posixPath
+	
+	if parts is {} then
+		set AppleScript's text item delimiters to oldDelims
+		return posixPath
+	end if
+	
+	set fileName to item -1 of parts
+	set AppleScript's text item delimiters to oldDelims
+	return fileName
+end fileNameFromPath
+
+
+on joinList(theList, delimiter)
+	set oldDelims to AppleScript's text item delimiters
+	set AppleScript's text item delimiters to delimiter
+	set joinedText to theList as text
+	set AppleScript's text item delimiters to oldDelims
+	return joinedText
+end joinList</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>InputUUID</key>
+				<string>FC6CACE4-552C-46DC-A5FB-D1A0D194F200</string>
+				<key>Keywords</key>
+				<array>
+					<string>実行</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>F9E87518-E506-470C-BE30-73F1D9FE6C9D</string>
+				<key>UUID</key>
+				<string>E415C9A6-A19C-44D9-A471-A54878ED1A48</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>309.000000:380.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict>
+		<key>BA1EE051-970C-4D8D-9350-49E2572BE682</key>
+		<dict>
+			<key>from</key>
+			<string>62C052AF-EDF6-42EE-A0B7-9F015F8FAFC6 - 62C052AF-EDF6-42EE-A0B7-9F015F8FAFC6</string>
+			<key>to</key>
+			<string>E415C9A6-A19C-44D9-A471-A54878ED1A48 - E415C9A6-A19C-44D9-A471-A54878ED1A48</string>
+		</dict>
+	</dict>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.application</string>
+	</dict>
+</dict>
+</plist>
