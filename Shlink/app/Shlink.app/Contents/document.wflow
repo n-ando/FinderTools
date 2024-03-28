@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AMApplicationBuild</key>
+	<string>534</string>
+	<key>AMApplicationVersion</key>
+	<string>2.10</string>
+	<key>AMDocumentVersion</key>
+	<string>2</string>
+	<key>actions</key>
+	<array>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>1.0.2</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.applescript.object</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run AppleScript.action</string>
+				<key>ActionName</key>
+				<string>AppleScriptを実行</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>source</key>
+					<string>on run {input, parameters}
+    tell application "Finder"
+        set selectedItems to selection
+    end tell
+
+    if selectedItems is {} then
+        display dialog "Finderで圧縮したいファイルを1つ以上選択してから実行してください。" buttons {"OK"} default button "OK" with icon caution with title "Finder Shrink"
+        return {}
+    end if
+
+    try
+        set modeButton to button returned of (display dialog "圧縮プリセットの指定方法を選択してください。" &amp; return &amp; return &amp; "screen: 低画質・最小サイズ" &amp; return &amp; "ebook: 中程度" &amp; return &amp; "printer: 高品質" &amp; return &amp; "prepress: 最高品質" buttons {"キャンセル", "全種類同じ設定", "種類ごとに指定"} default button "全種類同じ設定" cancel button "キャンセル" with title "Finder Shrink")
+    on error number -128
+        return {}
+    end try
+
+    if modeButton is "全種類同じ設定" then
+        set commonPreset to my pickPreset("すべての種類に使う圧縮率を選んでください。", "ebook")
+        if commonPreset is false then return {}
+
+        set pdfPreset to commonPreset
+        set officePreset to commonPreset
+        set imagePreset to commonPreset
+        set videoPreset to commonPreset
+        set zipPreset to commonPreset
+    else
+        set pdfPreset to my pickPreset("PDFに使う圧縮率を選んでください。", "ebook")
+        if pdfPreset is false then return {}
+
+        set officePreset to my pickPreset("Word(docx) / PowerPoint(pptx)に使う圧縮率を選んでください。", "ebook")
+        if officePreset is false then return {}
+
+        set imagePreset to my pickPreset("画像ファイルに使う圧縮率を選んでください。", "ebook")
+        if imagePreset is false then return {}
+
+        set videoPreset to my pickPreset("動画ファイルに使う圧縮率を選んでください。", "ebook")
+        if videoPreset is false then return {}
+
+        set zipPreset to my pickPreset("ZIPファイル自体の出力名に付ける設定名を選んでください。ZIP内の各ファイルは上の種類別設定で圧縮します。", "ebook")
+        if zipPreset is false then return {}
+    end if
+
+    set outputList to {"__FINDER_SHRINK_V2__", "PDF=" &amp; pdfPreset, "OFFICE=" &amp; officePreset, "IMAGE=" &amp; imagePreset, "VIDEO=" &amp; videoPreset, "ZIP=" &amp; zipPreset}
+
+    repeat with anItem in selectedItems
+        try
+            set itemAlias to anItem as alias
+            set end of outputList to POSIX path of itemAlias
+        end try
+    end repeat
+
+    return outputList
+end run
+
+on pickPreset(promptText, defaultPreset)
+    set presets to {"screen", "ebook", "printer", "prepress"}
+
+    try
+        set picked to choose from list presets with title "Finder Shrink" with prompt promptText default items {defaultPreset} OK button name "OK" cancel button name "キャンセル"
+        if picked is false then return false
+        return item 1 of picked
+    on error number -128
+        return false
+    end try
+end pickPreset
+</string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.Automator.RunScript</string>
+				<key>CFBundleVersion</key>
+				<string>1.0.2</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunScriptAction</string>
+				<key>InputUUID</key>
+				<string>F3F7A0A6-0D67-437B-8290-2ECBC1FC99BE</string>
+				<key>Keywords</key>
+				<array>
+					<string>実行</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>B855F925-8C40-491C-BEDA-3D106FC3E36A</string>
+				<key>UUID</key>
+				<string>8F0CA9BE-6A27-4ECD-8C19-0F309DEC21AB</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<string>on run {input, parameters}
+	
+	(* Your script goes here *)
+	
+	return input
+end run</string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>309.000000:315.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>action</key>
+			<dict>
+				<key>AMAccepts</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Optional</key>
+					<true/>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>AMActionVersion</key>
+				<string>2.0.3</string>
+				<key>AMApplication</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>AMParameterProperties</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<dict/>
+					<key>CheckedForUserDefaultShell</key>
+					<dict/>
+					<key>inputMethod</key>
+					<dict/>
+					<key>shell</key>
+					<dict/>
+					<key>source</key>
+					<dict/>
+				</dict>
+				<key>AMProvides</key>
+				<dict>
+					<key>Container</key>
+					<string>List</string>
+					<key>Types</key>
+					<array>
+						<string>com.apple.cocoa.string</string>
+					</array>
+				</dict>
+				<key>ActionBundlePath</key>
+				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<key>ActionName</key>
+				<string>シェルスクリプトを実行</string>
+				<key>ActionParameters</key>
+				<dict>
+					<key>COMMAND_STRING</key>
+					<string>#!/bin/bash
+
+# Finder Shrink - Automator shell step, v2.
+#
+# Automator settings:
+#   Shell: /bin/bash
+#   Pass input: as arguments
+#
+# This version deliberately exits with status 0 after logging. Otherwise Automator
+# can show an unhelpful error dialog such as: error: "".
+
+if [ -z "${BASH_VERSION:-}" ]; then
+    if [ -x /usr/bin/osascript ]; then
+        /usr/bin/osascript -e 'display dialog "Finder Shrink: Automatorの「シェルスクリプトを実行」アクションで、シェルを /bin/bash に変更してください。シェバン行だけではAutomatorの実行シェルは変わりません。" buttons {"OK"} default button "OK" with icon caution with title "Finder Shrink"'
+    else
+        printf '%s\n' 'Finder Shrink: please set Automator shell to /bin/bash.'
+    fi
+    exit 0
+fi
+
+set +e
+IFS=$'\n\t'
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:/opt/imagemagick/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+APP_NAME="Finder Shrink"
+MARKER_V2="__FINDER_SHRINK_V2__"
+MARKER_V1="__FINDER_SHRINK_V1__"
+LOG_DIR="${HOME}/Library/Logs/FinderShrink"
+mkdir -p "$LOG_DIR"
+LOG_FILE="${LOG_DIR}/$(date '+%Y%m%d_%H%M%S').log"
+touch "$LOG_FILE"
+
+# Keep Automator stdout open for the final result line before redirecting logs.
+exec 3&gt;&amp;1
+
+# Write every command error and diagnostic to the log. Automator still receives
+# the final "Log: ..." line, but no hidden stderr should remain.
+exec &gt;&gt; "$LOG_FILE" 2&gt;&amp;1
+
+SHOW_FINISH_DIALOG=0
+WRITE_OUTPUT_IF_NOT_SMALLER=0
+
+OUTPUT_COUNT=0
+SKIP_COUNT=0
+FAIL_COUNT=0
+MEDIA_OK_COUNT=0
+MEDIA_SKIP_COUNT=0
+MEDIA_FAIL_COUNT=0
+
+timestamp() {
+    date '+%H:%M:%S'
+}
+
+log() {
+    printf '[%s] %s\n' "$(timestamp)" "$*"
+}
+
+notify() {
+    [ -x /usr/bin/osascript ] || return 0
+    /usr/bin/osascript \
+        -e 'on run argv' \
+        -e 'display notification (item 1 of argv) with title "Finder Shrink"' \
+        -e 'end run' \
+        "$1" &gt;/dev/null 2&gt;&amp;1 || true
+}
+
+dialog() {
+    [ "$SHOW_FINISH_DIALOG" = "1" ] || return 0
+    [ -x /usr/bin/osascript ] || return 0
+    /usr/bin/osascript \
+        -e 'on run argv' \
+        -e 'display dialog (item 1 of argv) buttons {"OK"} default button "OK" with title "Finder Shrink"' \
+        -e 'end run' \
+        "$1" &gt;/dev/null 2&gt;&amp;1 || true
+}
+
+normalize_preset() {
+    case "$1" in
+        preprocess) printf '%s\n' "prepress" ;;
+        *) printf '%s\n' "$1" ;;
+    esac
+}
+
+valid_preset() {
+    case "$1" in
+        screen|ebook|printer|prepress) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+get_ext() {
+    local base ext
+    base="$(basename "$1")"
+    case "$base" in
+        *.*)
+            ext="${base##*.}"
+            printf '%s\n' "$ext" | tr '[:upper:]' '[:lower:]'
+            ;;
+        *)
+            printf '%s\n' ""
+            ;;
+    esac
+}
+
+is_image_ext() {
+    case "$1" in
+        jpg|jpeg|png|gif|tif|tiff|bmp|webp|heic|heif|avif|jp2|j2k) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+is_video_ext() {
+    case "$1" in
+        mp4|m4v|mov|mkv|avi|webm|wmv|mpg|mpeg|3gp|3g2|flv|mts|m2ts|ts) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+image_settings() {
+    case "$1" in
+        screen) printf '%s\n' "1024 60" ;;
+        ebook) printf '%s\n' "1280 70" ;;
+        printer) printf '%s\n' "1920 80" ;;
+        prepress) printf '%s\n' "2560 90" ;;
+        *) printf '%s\n' "1280 70" ;;
+    esac
+}
+
+video_settings() {
+    case "$1" in
+        screen) printf '%s\n' "720 32 96k 40" ;;
+        ebook) printf '%s\n' "1080 28 128k 36" ;;
+        printer) printf '%s\n' "1440 23 160k 31" ;;
+        prepress) printf '%s\n' "2160 18 192k 26" ;;
+        *) printf '%s\n' "1080 28 128k 36" ;;
+    esac
+}
+
+filesize() {
+    stat -f%z "$1" 2&gt;/dev/null || stat -c%s "$1" 2&gt;/dev/null || printf '%s\n' "0"
+}
+
+human_size() {
+    awk -v bytes="$1" 'BEGIN {
+        split("B KB MB GB TB", u, " ");
+        s = bytes + 0;
+        i = 1;
+        while (s &gt;= 1024 &amp;&amp; i &lt; 5) { s = s / 1024; i++ }
+        if (i == 1) printf "%d%s", s, u[i];
+        else printf "%.1f%s", s, u[i];
+    }'
+}
+
+tmp_path() {
+    local ext t
+    ext="$1"
+    t="$(mktemp "${TMPDIR:-/tmp}/finder_shrink.XXXXXX")"
+    if [ -z "$t" ]; then
+        return 1
+    fi
+    rm -f "$t"
+    printf '%s.%s\n' "$t" "$ext"
+}
+
+make_output_path() {
+    local src suffix override_ext dir base name ext candidate i
+    src="$1"
+    suffix="$2"
+    override_ext="${3:-}"
+
+    dir="$(dirname "$src")"
+    base="$(basename "$src")"
+
+    if [ -n "$override_ext" ]; then
+        case "$base" in
+            *.*) name="${base%.*}" ;;
+            *) name="$base" ;;
+        esac
+        ext="$override_ext"
+        candidate="${dir}/${name}_${suffix}.${ext}"
+    else
+        case "$base" in
+            *.*)
+                name="${base%.*}"
+                ext="${base##*.}"
+                candidate="${dir}/${name}_${suffix}.${ext}"
+                ;;
+            *)
+                name="$base"
+                ext=""
+                candidate="${dir}/${name}_${suffix}"
+                ;;
+        esac
+    fi
+
+    if [ ! -e "$candidate" ]; then
+        printf '%s\n' "$candidate"
+        return 0
+    fi
+
+    i=2
+    while :; do
+        if [ -n "$override_ext" ]; then
+            candidate="${dir}/${name}_${suffix}_${i}.${ext}"
+        elif [ -n "$ext" ]; then
+            candidate="${dir}/${name}_${suffix}_${i}.${ext}"
+        else
+            candidate="${dir}/${name}_${suffix}_${i}"
+        fi
+
+        if [ ! -e "$candidate" ]; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+        i=$((i + 1))
+    done
+}
+
+accept_output() {
+    local src dst tmp label src_size tmp_size
+    src="$1"
+    dst="$2"
+    tmp="$3"
+    label="$4"
+
+    if [ ! -s "$tmp" ]; then
+        log "FAIL: ${label}: $(basename "$src") -&gt; output is empty."
+        rm -f "$tmp"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    src_size="$(filesize "$src")"
+    tmp_size="$(filesize "$tmp")"
+
+    if [ "$src_size" -eq 0 ] || [ "$tmp_size" -lt "$src_size" ] || [ "$WRITE_OUTPUT_IF_NOT_SMALLER" = "1" ]; then
+        mv -f "$tmp" "$dst"
+        OUTPUT_COUNT=$((OUTPUT_COUNT + 1))
+        if [ "$tmp_size" -lt "$src_size" ]; then
+            log "OK: ${label}: $(basename "$src") -&gt; $(basename "$dst") ($(human_size "$src_size") -&gt; $(human_size "$tmp_size"))"
+        else
+            log "WRITE: ${label}: $(basename "$src") -&gt; $(basename "$dst") ($(human_size "$src_size") -&gt; $(human_size "$tmp_size"); not smaller)"
+        fi
+        return 0
+    fi
+
+    rm -f "$tmp"
+    SKIP_COUNT=$((SKIP_COUNT + 1))
+    log "SKIP: ${label}: $(basename "$src") would not become smaller ($(human_size "$src_size") -&gt; $(human_size "$tmp_size")). No output file was written."
+    return 0
+}
+
+finish_output() {
+    local src dst tmp replace_mode label before_dst
+    src="$1"
+    dst="$2"
+    tmp="$3"
+    replace_mode="$4"
+    label="$5"
+
+    before_dst="$dst"
+    accept_output "$src" "$dst" "$tmp" "$label"
+
+    if [ -e "$before_dst" ] &amp;&amp; [ "$replace_mode" = "replace" ]; then
+        rm -f "$src"
+    fi
+
+    return 0
+}
+
+accept_smaller_in_place() {
+    local src tmp label src_size tmp_size
+    src="$1"
+    tmp="$2"
+    label="$3"
+
+    if [ ! -s "$tmp" ]; then
+        rm -f "$tmp"
+        MEDIA_FAIL_COUNT=$((MEDIA_FAIL_COUNT + 1))
+        log "  media FAIL: $label -&gt; output is empty"
+        return 0
+    fi
+
+    src_size="$(filesize "$src")"
+    tmp_size="$(filesize "$tmp")"
+
+    if [ "$src_size" -eq 0 ] || [ "$tmp_size" -lt "$src_size" ]; then
+        mv -f "$tmp" "$src"
+        MEDIA_OK_COUNT=$((MEDIA_OK_COUNT + 1))
+        log "  media OK: $label ($(human_size "$src_size") -&gt; $(human_size "$tmp_size"))"
+        return 0
+    fi
+
+    rm -f "$tmp"
+    MEDIA_SKIP_COUNT=$((MEDIA_SKIP_COUNT + 1))
+    log "  media SKIP: $label would not become smaller ($(human_size "$src_size") -&gt; $(human_size "$tmp_size"))"
+    return 0
+}
+
+compress_pdf() {
+    local src preset mode dst tmp rc
+    src="$1"
+    preset="$2"
+    mode="$3"
+
+    if [ -z "$GS_CMD" ]; then
+        log "SKIP: PDF: $(basename "$src") (gs not found)"
+        SKIP_COUNT=$((SKIP_COUNT + 1))
+        return 0
+    fi
+
+    dst="$(make_output_path "$src" "$preset")"
+    tmp="$(tmp_path "pdf")"
+    if [ -z "$tmp" ]; then
+        log "FAIL: PDF: could not create temp file"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    "$GS_CMD" \
+        -sDEVICE=pdfwrite \
+        -dCompatibilityLevel=1.4 \
+        "-dPDFSETTINGS=/${preset}" \
+        -dDetectDuplicateImages=true \
+        -dCompressFonts=true \
+        -dSubsetFonts=true \
+        -dNOPAUSE \
+        -dQUIET \
+        -dBATCH \
+        "-sOutputFile=$tmp" \
+        "$src"
+    rc="$?"
+
+    if [ "$rc" -ne 0 ]; then
+        rm -f "$tmp"
+        log "FAIL: PDF: $(basename "$src") (gs exit $rc)"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    finish_output "$src" "$dst" "$tmp" "$mode" "PDF"
+}
+
+compress_image_to_file() {
+    local preset src out settings max quality ext rc
+    preset="$1"
+    src="$2"
+    out="$3"
+
+    if [ -z "$IM_CMD" ]; then
+        return 1
+    fi
+
+    settings="$(image_settings "$preset")"
+    local old_ifs
+    old_ifs="$IFS"
+    IFS=' '
+    set -- $settings
+    IFS="$old_ifs"
+    max="${1:-1280}"
+    quality="${2:-70}"
+    ext="$(get_ext "$src")"
+
+    if [ "$ext" = "gif" ]; then
+        "$IM_CMD" "$src" -coalesce -resize "${max}x${max}&gt;" -layers Optimize "$out"
+    else
+        "$IM_CMD" "$src" -auto-orient -resize "${max}x${max}&gt;" -strip -quality "$quality" "$out"
+    fi
+    rc="$?"
+    return "$rc"
+}
+
+compress_image() {
+    local src preset mode ext dst tmp
+    src="$1"
+    preset="$2"
+    mode="$3"
+
+    if [ -z "$IM_CMD" ]; then
+        log "SKIP: Image: $(basename "$src") (ImageMagick not found)"
+        SKIP_COUNT=$((SKIP_COUNT + 1))
+        return 0
+    fi
+
+    ext="$(get_ext "$src")"
+    dst="$(make_output_path "$src" "$preset")"
+    tmp="$(tmp_path "$ext")"
+    if [ -z "$tmp" ]; then
+        log "FAIL: Image: could not create temp file"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    if compress_image_to_file "$preset" "$src" "$tmp"; then
+        finish_output "$src" "$dst" "$tmp" "$mode" "Image"
+    else
+        rm -f "$tmp"
+        log "FAIL: Image: $(basename "$src")"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+    fi
+    return 0
+}
+
+compress_image_in_place() {
+    local preset src ext tmp
+    preset="$1"
+    src="$2"
+
+    if [ -z "$IM_CMD" ]; then
+        MEDIA_FAIL_COUNT=$((MEDIA_FAIL_COUNT + 1))
+        log "  media FAIL: $(basename "$src") (ImageMagick not found)"
+        return 0
+    fi
+
+    ext="$(get_ext "$src")"
+    tmp="$(tmp_path "$ext")"
+    if [ -z "$tmp" ]; then
+        MEDIA_FAIL_COUNT=$((MEDIA_FAIL_COUNT + 1))
+        log "  media FAIL: $(basename "$src") (could not create temp file)"
+        return 0
+    fi
+
+    if compress_image_to_file "$preset" "$src" "$tmp"; then
+        accept_smaller_in_place "$src" "$tmp" "$(basename "$src")"
+    else
+        rm -f "$tmp"
+        MEDIA_FAIL_COUNT=$((MEDIA_FAIL_COUNT + 1))
+        log "  media FAIL: $(basename "$src") (ImageMagick conversion failed)"
+    fi
+    return 0
+}
+
+compress_video_to_file() {
+    local preset src out settings max crf audio_bitrate vp9_crf out_ext vf rc
+    preset="$1"
+    src="$2"
+    out="$3"
+
+    if [ -z "$FFMPEG_CMD" ]; then
+        return 1
+    fi
+
+    settings="$(video_settings "$preset")"
+    local old_ifs
+    old_ifs="$IFS"
+    IFS=' '
+    set -- $settings
+    IFS="$old_ifs"
+    max="${1:-1080}"
+    crf="${2:-28}"
+    audio_bitrate="${3:-128k}"
+    vp9_crf="${4:-36}"
+
+    out_ext="$(get_ext "$out")"
+    vf="scale='if(gt(iw,ih),min(iw,${max}),-2)':'if(gt(iw,ih),-2,min(ih,${max}))'"
+
+    if [ "$out_ext" = "webm" ]; then
+        "$FFMPEG_CMD" -y -hide_banner -loglevel error \
+            -i "$src" \
+            -map 0:v:0 -map "0:a?" \
+            -vf "$vf" \
+            -c:v libvpx-vp9 -b:v 0 -crf "$vp9_crf" -row-mt 1 \
+            -c:a libopus -b:a "$audio_bitrate" \
+            "$out"
+    else
+        "$FFMPEG_CMD" -y -hide_banner -loglevel error \
+            -i "$src" \
+            -map 0:v:0 -map "0:a?" \
+            -vf "$vf" \
+            -c:v libx264 -preset medium -crf "$crf" -pix_fmt yuv420p \
+            -c:a aac -b:a "$audio_bitrate" \
+            "$out"
+    fi
+    rc="$?"
+    return "$rc"
+}
+
+compress_video() {
+    local src preset mode ext dst tmp
+    src="$1"
+    preset="$2"
+    mode="$3"
+
+    if [ -z "$FFMPEG_CMD" ]; then
+        log "SKIP: Video: $(basename "$src") (ffmpeg not found)"
+        SKIP_COUNT=$((SKIP_COUNT + 1))
+        return 0
+    fi
+
+    ext="$(get_ext "$src")"
+    dst="$(make_output_path "$src" "$preset")"
+    tmp="$(tmp_path "$ext")"
+    if [ -z "$tmp" ]; then
+        log "FAIL: Video: could not create temp file"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    if compress_video_to_file "$preset" "$src" "$tmp"; then
+        finish_output "$src" "$dst" "$tmp" "$mode" "Video"
+        return 0
+    fi
+
+    rm -f "$tmp"
+
+    if [ "$ext" != "mp4" ]; then
+        log "WARN: Video: $(basename "$src") failed with the same extension. Retrying as mp4."
+        dst="$(make_output_path "$src" "$preset" "mp4")"
+        tmp="$(tmp_path "mp4")"
+        if [ -n "$tmp" ] &amp;&amp; compress_video_to_file "$preset" "$src" "$tmp"; then
+            finish_output "$src" "$dst" "$tmp" "$mode" "Video"
+            return 0
+        fi
+        rm -f "$tmp"
+    fi
+
+    log "FAIL: Video: $(basename "$src")"
+    FAIL_COUNT=$((FAIL_COUNT + 1))
+    return 0
+}
+
+compress_video_in_place() {
+    local preset src ext tmp
+    preset="$1"
+    src="$2"
+
+    if [ -z "$FFMPEG_CMD" ]; then
+        MEDIA_FAIL_COUNT=$((MEDIA_FAIL_COUNT + 1))
+        log "  media FAIL: $(basename "$src") (ffmpeg not found)"
+        return 0
+    fi
+
+    ext="$(get_ext "$src")"
+    tmp="$(tmp_path "$ext")"
+    if [ -z "$tmp" ]; then
+        MEDIA_FAIL_COUNT=$((MEDIA_FAIL_COUNT + 1))
+        log "  media FAIL: $(basename "$src") (could not create temp file)"
+        return 0
+    fi
+
+    if compress_video_to_file "$preset" "$src" "$tmp"; then
+        accept_smaller_in_place "$src" "$tmp" "$(basename "$src")"
+    else
+        rm -f "$tmp"
+        MEDIA_FAIL_COUNT=$((MEDIA_FAIL_COUNT + 1))
+        log "  media FAIL: $(basename "$src") (ffmpeg conversion failed)"
+    fi
+    return 0
+}
+
+process_media_file() {
+    local preset f e
+    preset="$1"
+    f="$2"
+
+    [ -f "$f" ] || return 0
+    e="$(get_ext "$f")"
+    if is_image_ext "$e"; then
+        compress_image_in_place "$preset" "$f"
+    elif is_video_ext "$e"; then
+        compress_video_in_place "$preset" "$f"
+    fi
+    return 0
+}
+
+compress_office() {
+    local src preset mode ext dst tmpout work media_root list f rc media_before changed
+    src="$1"
+    preset="$2"
+    mode="$3"
+
+    if [ -z "$ZIP_CMD" ] || [ -z "$UNZIP_CMD" ]; then
+        log "SKIP: Office: $(basename "$src") (zip/unzip not found)"
+        SKIP_COUNT=$((SKIP_COUNT + 1))
+        return 0
+    fi
+
+    ext="$(get_ext "$src")"
+    dst="$(make_output_path "$src" "$preset")"
+    tmpout="$(tmp_path "$ext")"
+    work="$(mktemp -d "${TMPDIR:-/tmp}/finder_shrink_office.XXXXXX")"
+
+    if [ -z "$tmpout" ] || [ -z "$work" ]; then
+        rm -rf "$work"
+        rm -f "$tmpout"
+        log "FAIL: Office: $(basename "$src") (could not create temp area)"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    log "Office: expanding $(basename "$src")"
+    "$UNZIP_CMD" -q "$src" -d "$work"
+    rc="$?"
+
+    if [ "$rc" -ne 0 ]; then
+        # Some archives extract with warnings. Continue only if the structure looks
+        # like an Office document.
+        if [ ! -f "$work/[Content_Types].xml" ]; then
+            rm -rf "$work"
+            rm -f "$tmpout"
+            log "FAIL: Office: $(basename "$src") could not be expanded (unzip exit $rc)"
+            FAIL_COUNT=$((FAIL_COUNT + 1))
+            return 0
+        fi
+        log "WARN: Office: unzip returned $rc, but Office structure was extracted; continuing."
+    fi
+
+    if [ "$ext" = "docx" ]; then
+        media_root="$work/word/media"
+    else
+        media_root="$work/ppt/media"
+    fi
+
+    media_before="$MEDIA_OK_COUNT"
+    if [ -d "$media_root" ]; then
+        list="$(mktemp "${TMPDIR:-/tmp}/finder_shrink_media.XXXXXX")"
+        if [ -n "$list" ]; then
+            find "$media_root" -type f -print0 &gt; "$list"
+            while IFS= read -r -d '' f; do
+                process_media_file "$preset" "$f"
+            done &lt; "$list"
+            rm -f "$list"
+        fi
+    else
+        log "Office: no media directory found in $(basename "$src")"
+    fi
+
+    changed=$((MEDIA_OK_COUNT - media_before))
+    log "Office: media changed in $(basename "$src"): $changed"
+
+    (cd "$work" &amp;&amp; "$ZIP_CMD" -qr -X "$tmpout" .)
+    rc="$?"
+
+    rm -rf "$work"
+
+    if [ "$rc" -ne 0 ]; then
+        rm -f "$tmpout"
+        log "FAIL: Office: $(basename "$src") could not be rebuilt (zip exit $rc)"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    finish_output "$src" "$dst" "$tmpout" "$mode" "Office"
+    return 0
+}
+
+compress_zip() {
+    local src preset mode dst tmpout work list f rc
+    src="$1"
+    preset="$2"
+    mode="$3"
+
+    if [ -z "$ZIP_CMD" ] || [ -z "$UNZIP_CMD" ]; then
+        log "SKIP: ZIP: $(basename "$src") (zip/unzip not found)"
+        SKIP_COUNT=$((SKIP_COUNT + 1))
+        return 0
+    fi
+
+    dst="$(make_output_path "$src" "$preset")"
+    tmpout="$(tmp_path "zip")"
+    work="$(mktemp -d "${TMPDIR:-/tmp}/finder_shrink_zip.XXXXXX")"
+
+    if [ -z "$tmpout" ] || [ -z "$work" ]; then
+        rm -rf "$work"
+        rm -f "$tmpout"
+        log "FAIL: ZIP: $(basename "$src") (could not create temp area)"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    log "ZIP: expanding $(basename "$src")"
+    "$UNZIP_CMD" -q "$src" -d "$work"
+    rc="$?"
+
+    if [ "$rc" -ne 0 ]; then
+        rm -rf "$work"
+        rm -f "$tmpout"
+        log "FAIL: ZIP: $(basename "$src") could not be expanded (unzip exit $rc)"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    list="$(mktemp "${TMPDIR:-/tmp}/finder_shrink_ziplist.XXXXXX")"
+    if [ -n "$list" ]; then
+        find "$work" -type f -print0 &gt; "$list"
+        while IFS= read -r -d '' f; do
+            [ -f "$f" ] || continue
+            process_file "$f" "replace"
+        done &lt; "$list"
+        rm -f "$list"
+    fi
+
+    (cd "$work" &amp;&amp; "$ZIP_CMD" -qr -X "$tmpout" .)
+    rc="$?"
+
+    rm -rf "$work"
+
+    if [ "$rc" -ne 0 ]; then
+        rm -f "$tmpout"
+        log "FAIL: ZIP: $(basename "$src") could not be rebuilt (zip exit $rc)"
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 0
+    fi
+
+    finish_output "$src" "$dst" "$tmpout" "$mode" "ZIP"
+    return 0
+}
+
+process_file() {
+    local src mode ext
+    src="$1"
+    mode="$2"
+
+    if [ ! -f "$src" ]; then
+        log "SKIP: $(basename "$src") is not a regular file."
+        SKIP_COUNT=$((SKIP_COUNT + 1))
+        return 0
+    fi
+
+    ext="$(get_ext "$src")"
+    log "Processing: $(basename "$src")"
+
+    case "$ext" in
+        pdf)
+            compress_pdf "$src" "$PDF_PRESET" "$mode"
+            ;;
+        docx|pptx)
+            compress_office "$src" "$OFFICE_PRESET" "$mode"
+            ;;
+        zip)
+            compress_zip "$src" "$ZIP_PRESET" "$mode"
+            ;;
+        *)
+            if is_image_ext "$ext"; then
+                compress_image "$src" "$IMAGE_PRESET" "$mode"
+            elif is_video_ext "$ext"; then
+                compress_video "$src" "$VIDEO_PRESET" "$mode"
+            else
+                log "SKIP: $(basename "$src") is not a supported extension."
+                SKIP_COUNT=$((SKIP_COUNT + 1))
+            fi
+            ;;
+    esac
+
+    return 0
+}
+
+parse_input() {
+    if [ "$#" -lt 7 ]; then
+        log "ERROR: No usable arguments were received."
+        log "Automator settings must be: Shell=/bin/bash, Pass input=as arguments."
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 1
+    fi
+
+    if [ "$1" != "$MARKER_V2" ] &amp;&amp; [ "$1" != "$MARKER_V1" ]; then
+        log "ERROR: Unexpected Automator input marker: $1"
+        log "Make sure the AppleScript action is above this shell action."
+        FAIL_COUNT=$((FAIL_COUNT + 1))
+        return 1
+    fi
+    shift
+
+    PDF_PRESET="$(normalize_preset "${1#PDF=}")"; shift
+    OFFICE_PRESET="$(normalize_preset "${1#OFFICE=}")"; shift
+    IMAGE_PRESET="$(normalize_preset "${1#IMAGE=}")"; shift
+    VIDEO_PRESET="$(normalize_preset "${1#VIDEO=}")"; shift
+    ZIP_PRESET="$(normalize_preset "${1#ZIP=}")"; shift
+
+    for p in "$PDF_PRESET" "$OFFICE_PRESET" "$IMAGE_PRESET" "$VIDEO_PRESET" "$ZIP_PRESET"; do
+        if ! valid_preset "$p"; then
+            log "ERROR: Invalid preset: $p"
+            FAIL_COUNT=$((FAIL_COUNT + 1))
+            return 1
+        fi
+    done
+
+    FILE_ARGS=("$@")
+    return 0
+}
+
+main() {
+    log "=== Finder Shrink start ==="
+    log "Log: $LOG_FILE"
+
+    parse_input "$@"
+    if [ "$?" -ne 0 ]; then
+        dialog "入力形式が不正です。Automator設定を確認してください。\n\nシェル: /bin/bash\n入力の引き渡し: 引数として\n\nログ:\n$LOG_FILE"
+        printf 'Log: %s\n' "$LOG_FILE" &gt;&amp;3 2&gt;/dev/null
+        return 0
+    fi
+
+    log "PDF=$PDF_PRESET OFFICE=$OFFICE_PRESET IMAGE=$IMAGE_PRESET VIDEO=$VIDEO_PRESET ZIP=$ZIP_PRESET"
+    log "Commands: gs=${GS_CMD:-not found}; ImageMagick=${IM_CMD:-not found}; ffmpeg=${FFMPEG_CMD:-not found}; zip=${ZIP_CMD:-not found}; unzip=${UNZIP_CMD:-not found}"
+
+    for item in "${FILE_ARGS[@]}"; do
+        process_file "$item" "keep"
+    done
+
+    log "Summary: output=$OUTPUT_COUNT skip=$SKIP_COUNT fail=$FAIL_COUNT media_ok=$MEDIA_OK_COUNT media_skip=$MEDIA_SKIP_COUNT media_fail=$MEDIA_FAIL_COUNT"
+    log "=== Finder Shrink done ==="
+
+    if [ "$FAIL_COUNT" -gt 0 ]; then
+        dialog "Finder Shrink は完了しましたが、失敗があります。\n\n出力: $OUTPUT_COUNT\nスキップ: $SKIP_COUNT\n失敗: $FAIL_COUNT\n内部メディア圧縮: $MEDIA_OK_COUNT\n\nログ:\n$LOG_FILE"
+    elif [ "$OUTPUT_COUNT" -eq 0 ]; then
+        dialog "Finder Shrink は完了しましたが、新しいファイルは作成されませんでした。\n\n主な理由は、圧縮後のファイルが元より小さくならなかった、または対象メディアが無かったためです。\n\nログ:\n$LOG_FILE"
+    else
+        notify "完了: 出力 $OUTPUT_COUNT 件 / スキップ $SKIP_COUNT 件"
+        if [ "$SHOW_FINISH_DIALOG" = "1" ]; then
+            dialog "Finder Shrink 完了\n\n出力: $OUTPUT_COUNT\nスキップ: $SKIP_COUNT\n失敗: $FAIL_COUNT\n内部メディア圧縮: $MEDIA_OK_COUNT\n\nログ:\n$LOG_FILE"
+        fi
+    fi
+
+    return 0
+}
+
+# Commands are resolved after PATH is set and before main starts.
+GS_CMD="$(command -v gs 2&gt;/dev/null || true)"
+IM_CMD="$(command -v magick 2&gt;/dev/null || command -v convert 2&gt;/dev/null || true)"
+FFMPEG_CMD="$(command -v ffmpeg 2&gt;/dev/null || true)"
+ZIP_CMD="$(command -v zip 2&gt;/dev/null || true)"
+UNZIP_CMD="$(command -v unzip 2&gt;/dev/null || true)"
+
+main "$@"
+
+# Automator should not show a blank error dialog. Check the log for actual
+# failures and skips.
+printf 'Log: %s\n' "$LOG_FILE" &gt;&amp;3
+exit 0
+</string>
+					<key>CheckedForUserDefaultShell</key>
+					<true/>
+					<key>inputMethod</key>
+					<integer>1</integer>
+					<key>shell</key>
+					<string>/bin/bash</string>
+					<key>source</key>
+					<string></string>
+				</dict>
+				<key>BundleIdentifier</key>
+				<string>com.apple.RunShellScript</string>
+				<key>CFBundleVersion</key>
+				<string>2.0.3</string>
+				<key>CanShowSelectedItemsWhenRun</key>
+				<false/>
+				<key>CanShowWhenRun</key>
+				<true/>
+				<key>Category</key>
+				<array>
+					<string>AMCategoryUtilities</string>
+				</array>
+				<key>Class Name</key>
+				<string>RunShellScriptAction</string>
+				<key>InputUUID</key>
+				<string>34ED8AD7-FC5C-4BC1-864B-7E3BE191EDB4</string>
+				<key>Keywords</key>
+				<array>
+					<string>シェル</string>
+					<string>スクリプト</string>
+					<string>コマンド</string>
+					<string>実行</string>
+					<string>UNIX</string>
+				</array>
+				<key>OutputUUID</key>
+				<string>B8B5BC77-7B7A-40AF-9FB6-C3EBE8564821</string>
+				<key>UUID</key>
+				<string>EDE1C418-16BB-4BDC-9BA2-72F4EA03977E</string>
+				<key>UnlocalizedApplications</key>
+				<array>
+					<string>Automator</string>
+				</array>
+				<key>arguments</key>
+				<dict>
+					<key>0</key>
+					<dict>
+						<key>default value</key>
+						<integer>0</integer>
+						<key>name</key>
+						<string>inputMethod</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>0</string>
+					</dict>
+					<key>1</key>
+					<dict>
+						<key>default value</key>
+						<false/>
+						<key>name</key>
+						<string>CheckedForUserDefaultShell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>1</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>source</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>2</string>
+					</dict>
+					<key>3</key>
+					<dict>
+						<key>default value</key>
+						<string></string>
+						<key>name</key>
+						<string>COMMAND_STRING</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>3</string>
+					</dict>
+					<key>4</key>
+					<dict>
+						<key>default value</key>
+						<string>/bin/sh</string>
+						<key>name</key>
+						<string>shell</string>
+						<key>required</key>
+						<string>0</string>
+						<key>type</key>
+						<string>0</string>
+						<key>uuid</key>
+						<string>4</string>
+					</dict>
+				</dict>
+				<key>isViewVisible</key>
+				<integer>1</integer>
+				<key>location</key>
+				<string>309.000000:677.000000</string>
+				<key>nibPath</key>
+				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
+			</dict>
+			<key>isViewVisible</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>connectors</key>
+	<dict>
+		<key>C83FA26B-1BF5-41FD-BCD0-5B98FFB7880F</key>
+		<dict>
+			<key>from</key>
+			<string>8F0CA9BE-6A27-4ECD-8C19-0F309DEC21AB - 8F0CA9BE-6A27-4ECD-8C19-0F309DEC21AB</string>
+			<key>to</key>
+			<string>EDE1C418-16BB-4BDC-9BA2-72F4EA03977E - EDE1C418-16BB-4BDC-9BA2-72F4EA03977E</string>
+		</dict>
+	</dict>
+	<key>workflowMetaData</key>
+	<dict>
+		<key>workflowTypeIdentifier</key>
+		<string>com.apple.Automator.application</string>
+	</dict>
+</dict>
+</plist>
