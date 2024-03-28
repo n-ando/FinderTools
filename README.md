@@ -72,7 +72,7 @@ Homebrewで p7zip (7zコマンド) をインストールすることにより、
 なお、本アプリケーションでは、Windowsでも展開できるように **ZipCrypto形式** で圧縮するようになっていますが、ZipCrypto形式はセキュリティ的に脆弱でパスワードを容易に推定できることが知られており、セキュリティを考慮する必要がファイルの場合は別途直接7zコマンドで圧縮することを推奨します。
 
 ### 2.5. NewVSCode.app
-<img src="https://github.com/n-ando/FinderTools/blob/main/NewVSCode/icons/icon_512x512@2x_light.png" width=32>
+<img src="https://github.com/n-ando/FinderTools/blob/main/NewVSCode/src/icon/light/master_1024.png" width=32>
 
 選択したファイルをVS-Codeの新規ウインドウで開くボタン。
 既存のウィンドウがどこにあっても、現在のデスクトップ上でVS-Codeを開きます。
