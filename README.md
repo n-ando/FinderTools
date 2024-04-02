@@ -77,3 +77,56 @@ Homebrewで p7zip (7zコマンド) をインストールすることにより、
 選択したファイルをVS-Codeの新規ウインドウで開くボタン。
 既存のウィンドウがどこにあっても、現在のデスクトップ上でVS-Codeを開きます。
 
+### 2.6. AnyToPDF.app
+<img src="https://github.com/n-ando/FinderTools/blob/main/AnyToPDF/src/icon/light/master_1024.png" width=32>
+
+選択したファイルをPDFに変換するボタン。
+対応ファイルは、
+- Wordファイル : {"doc", "docx"}
+- PowerPointファイル : {"ppt", "pptx"}
+- テキストファイル : {"txt"}
+- Markdownファイル : {"md", "markdown"}
+- 画像ファイル : {"png", "jpg", "jpeg", "gif", "tif", "tiff", "bmp", "heic", "webp"}
+
+#### 必要なコマンド
+
+- Word: Microsoft Word
+- PowerPoint: Microsoft PowerPoint
+- Text: cupsfilter (macOS標準)
+- Markdown: pandoc, mactex
+- 画像ファイル: cupsfilter (macOS標準)
+
+pandoc, mactexについては、以下のコマンドであらかじめインストールしておいてください。
+
+```shell
+% brew install mactex pandoc
+```
+
+### 2.6. Shlink.app
+<img src="https://github.com/n-ando/FinderTools/blob/main/Shlink/src/icon/light/master_1024.png" width=32>
+
+選択したファイルのファイルサイズを縮小するボタン。
+以下の Word, PowerPoint, ZIP, PDF, 画像、動画ファイルを縮小することができます。
+
+- Wordファイル : docx
+- PowerPointファイル : pptx
+- ZIPファイル: zip
+- PDFファイル : pdf
+- 画像ファイル : jpg, jpeg, png, gif, tif, tiff, bmp, webp, heic, heif, avif, jp2, j2k
+- 動画ファイル : mp4, m4v, mov, mkv, avi, webm, wmv, mpg, mpeg, 3gp, 3g2, flv, mts, m2ts, ts 
+
+Word, PowerPoint, ZIPについては、内包する画像ファイルや動画ファイルを縮小してファイルサイズを縮小します。
+
+
+#### 画質・品質レベル
+以下の4段階から、圧縮レベルを選択して、圧縮を行います。
+
+- screen: 低画質・最小サイズ, サイズ:1024, 品質:60
+- ebook: 中程度, 画面閲覧用, サイズ:1280, 品質:70
+- printer: 高品質, 通常印刷用, サイズ:1920, 品質:80
+- prepress: 最高品質, 高品質印刷用, サイズ:2560, 品質:90
+
+サイズは縦横のサイズのうち、そのサイズを超えた場合はリサイズします。
+品質は、ImageMagic の品質レベル値です。
+
+
