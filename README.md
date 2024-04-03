@@ -10,6 +10,7 @@
         - [2.3. NewTerminal.app](#23-newterminalapp)
         - [2.4. FinderZIP.app](#24-finderzipapp)
         - [2.5. NewVSCode.app](#25-newvscodeapp)
+        
 
 <!-- /TOC -->
 
