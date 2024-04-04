@@ -3,14 +3,20 @@
 <!-- TOC -->
 
 - [macOS Finder用ツール](#macos-finder%E7%94%A8%E3%83%84%E3%83%BC%E3%83%AB)
-    - [1. インストール](#1-%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)
-    - [2. 利用可能なツール](#2-%E5%88%A9%E7%94%A8%E5%8F%AF%E8%83%BD%E3%81%AA%E3%83%84%E3%83%BC%E3%83%AB)
-        - [2.1. NewText.app](#21-newtextapp)
-        - [2.2. NewMD.app](#22-newmdapp)
-        - [2.3. NewTerminal.app](#23-newterminalapp)
-        - [2.4. FinderZIP.app](#24-finderzipapp)
-        - [2.5. NewVSCode.app](#25-newvscodeapp)
-        
+    - [インストール](#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)
+    - [利用可能なツール](#%E5%88%A9%E7%94%A8%E5%8F%AF%E8%83%BD%E3%81%AA%E3%83%84%E3%83%BC%E3%83%AB)
+        - [NewText.app](#newtextapp)
+        - [NewMD.app](#newmdapp)
+        - [NewTerminal.app](#newterminalapp)
+        - [FinderZIP.app](#finderzipapp)
+            - [圧縮ファイル名について](#%E5%9C%A7%E7%B8%AE%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%90%8D%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
+            - [Windowsでの文字化け問題について](#windows%E3%81%A7%E3%81%AE%E6%96%87%E5%AD%97%E5%8C%96%E3%81%91%E5%95%8F%E9%A1%8C%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6)
+            - [ZipCrypto形式, AES256形式](#zipcrypto%E5%BD%A2%E5%BC%8F-aes256%E5%BD%A2%E5%BC%8F)
+        - [NewVSCode.app](#newvscodeapp)
+        - [AnyToPDF.app](#anytopdfapp)
+            - [必要なコマンド](#%E5%BF%85%E8%A6%81%E3%81%AA%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89)
+        - [Shlink.app](#shlinkapp)
+            - [画質・品質レベル](#%E7%94%BB%E8%B3%AA%E3%83%BB%E5%93%81%E8%B3%AA%E3%83%AC%E3%83%99%E3%83%AB)
 
 <!-- /TOC -->
 
